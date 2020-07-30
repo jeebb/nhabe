@@ -6,12 +6,26 @@ class NBCalendar extends StatefulWidget {
   final MonthAndYear initialMonthAndYear;
   final MonthChangedCallBack onMonthChanged;
 
+  final Map<int, String> weekDayLabels;
+  final TextStyle weekdayLabelStyle;
+
   const NBCalendar({
     this.titleBuilder,
     this.titleStyle,
     this.initialMonthAndYear,
     this.onMonthChanged,
-  });
+    this.weekDayLabels = const {
+      DateTime.monday: 'M',
+      DateTime.tuesday: 'T',
+      DateTime.wednesday: 'W',
+      DateTime.thursday: 'T',
+      DateTime.friday: 'F',
+      DateTime.saturday: 'S',
+      DateTime.sunday: 'S',
+    },
+    this.weekdayLabelStyle,
+  }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
+            'There must be configured labels for all 7 days of a week');
 
   @override
   State<StatefulWidget> createState() => _NBCalendarState();
@@ -41,6 +55,10 @@ class _NBCalendarState extends State<NBCalendar> {
               titleStyle: widget.titleStyle ?? defaultTitleStyle,
               onPrevSelected: () {},
               onNextSelected: () {},
+            ),
+            _WeekDays(
+              weekDayLabels: widget.weekDayLabels,
+              weekdayLabelStyle: widget.weekdayLabelStyle,
             ),
           ],
         ),
@@ -76,7 +94,7 @@ class _CalendarHeader extends StatelessWidget {
               ),
               InkWell(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -84,7 +102,7 @@ class _CalendarHeader extends StatelessWidget {
                         titleBuilder(monthAndYear),
                         style: titleStyle,
                       ),
-                      const SizedBox(width: 8.0),
+                      const SizedBox(width: 8),
                       Icon(Icons.keyboard_arrow_down),
                     ],
                   ),
@@ -96,6 +114,37 @@ class _CalendarHeader extends StatelessWidget {
                 onPressed: onNextSelected,
               ),
             ],
+          ),
+        ),
+      );
+}
+
+class _WeekDays extends StatelessWidget {
+  final Map<int, String> weekDayLabels;
+  final TextStyle weekdayLabelStyle;
+
+  const _WeekDays({
+    @required this.weekDayLabels,
+    @required this.weekdayLabelStyle,
+  });
+
+  @override
+  Widget build(BuildContext context) => Material(
+        child: Container(
+          padding: componentPadding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: weekDayLabels.keys
+                .map(
+                  (dayIndex) => Container(
+                    child: Text(
+                      weekDayLabels[dayIndex],
+                      style: weekdayLabelStyle ?? defaultWeekdayLabelStyle,
+                    ),
+                  ),
+                )
+                .toList(),
           ),
         ),
       );
