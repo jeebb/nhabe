@@ -57,10 +57,12 @@ class _CalendarHeader extends StatelessWidget {
 class _WeekDays extends StatelessWidget {
   final Map<int, String> weekDayLabels;
   final TextStyle weekdayLabelStyle;
+  final int firstDayOfWeek;
 
   const _WeekDays({
     @required this.weekDayLabels,
     @required this.weekdayLabelStyle,
+    @required this.firstDayOfWeek,
   });
 
   @override
@@ -70,17 +72,31 @@ class _WeekDays extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: weekDayLabels.keys
-                .map(
-                  (dayIndex) => Container(
-                    child: Text(
-                      weekDayLabels[dayIndex],
-                      style: weekdayLabelStyle ?? defaultWeekdayLabelStyle,
-                    ),
-                  ),
-                )
-                .toList(),
+            children: _weekDays(),
           ),
+        ),
+      );
+
+  List<Widget> _weekDays() {
+    final weekdays = <Widget>[
+      for (var i = firstDayOfWeek; i <= DateTime.daysPerWeek; i++)
+        _weekDay(weekDayLabels[i]),
+    ];
+
+    if (firstDayOfWeek > DateTime.monday) {
+      weekdays.addAll(<Widget>[
+        for (var i = DateTime.monday; i < firstDayOfWeek; i++)
+          _weekDay(weekDayLabels[i]),
+      ]);
+    }
+
+    return weekdays;
+  }
+
+  Widget _weekDay(String label) => Container(
+        child: Text(
+          label,
+          style: weekdayLabelStyle,
         ),
       );
 }

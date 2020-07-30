@@ -12,6 +12,9 @@ class NBCalendar extends StatefulWidget {
   final Map<int, String> weekDayLabels;
   final TextStyle weekdayLabelStyle;
 
+  /// DateTime.monday / DateTime.tuesday / ... / DateTime.sunday
+  final int firstDayOfWeek;
+
   const NBCalendar({
     this.titleBuilder,
     this.titleStyle,
@@ -27,6 +30,7 @@ class NBCalendar extends StatefulWidget {
       DateTime.sunday: 'S',
     },
     this.weekdayLabelStyle,
+    this.firstDayOfWeek = DateTime.monday,
   }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
             'There must be configured labels for all 7 days of a week');
 
@@ -61,7 +65,9 @@ class _NBCalendarState extends State<NBCalendar> {
             ),
             _WeekDays(
               weekDayLabels: widget.weekDayLabels,
-              weekdayLabelStyle: widget.weekdayLabelStyle,
+              weekdayLabelStyle:
+                  widget.weekdayLabelStyle ?? defaultWeekdayLabelStyle,
+              firstDayOfWeek: widget.firstDayOfWeek,
             ),
           ],
         ),
