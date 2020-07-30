@@ -89,9 +89,7 @@ class _CalendarHeader extends StatelessWidget {
                     ],
                   ),
                 ),
-                onTap: () {
-                  // TODO: show month & year selection dialog
-                },
+                onTap: () {},
               ),
               IconButton(
                 icon: Icon(Icons.chevron_right),
