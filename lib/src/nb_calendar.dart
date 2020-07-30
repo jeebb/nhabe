@@ -3,7 +3,10 @@ part of nhabe;
 class NBCalendar extends StatefulWidget {
   final CalendarTitleBuilder titleBuilder;
   final TextStyle titleStyle;
-  final MonthAndYear initialMonthAndYear;
+
+  /// current date as default
+  final MonthAndYear selectedMonthAndYear;
+
   final MonthChangedCallBack onMonthChanged;
 
   final Map<int, String> weekDayLabels;
@@ -12,7 +15,7 @@ class NBCalendar extends StatefulWidget {
   const NBCalendar({
     this.titleBuilder,
     this.titleStyle,
-    this.initialMonthAndYear,
+    this.selectedMonthAndYear,
     this.onMonthChanged,
     this.weekDayLabels = const {
       DateTime.monday: 'M',
@@ -39,8 +42,8 @@ class _NBCalendarState extends State<NBCalendar> {
   void initState() {
     super.initState();
 
-    selectedMonthAndYear =
-        widget.initialMonthAndYear ?? MonthAndYear.fromDateTime(DateTime.now());
+    selectedMonthAndYear = widget.selectedMonthAndYear ??
+        MonthAndYear.fromDateTime(DateTime.now());
   }
 
   @override
@@ -64,94 +67,6 @@ class _NBCalendarState extends State<NBCalendar> {
         ),
       );
 }
-
-class _CalendarHeader extends StatelessWidget {
-  final MonthAndYear monthAndYear;
-  final CalendarTitleBuilder titleBuilder;
-  final TextStyle titleStyle;
-  final VoidCallback onPrevSelected;
-  final VoidCallback onNextSelected;
-
-  const _CalendarHeader({
-    @required this.monthAndYear,
-    @required this.titleBuilder,
-    @required this.titleStyle,
-    @required this.onPrevSelected,
-    @required this.onNextSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) => Material(
-        child: Container(
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.chevron_left),
-                onPressed: onPrevSelected,
-              ),
-              InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        titleBuilder(monthAndYear),
-                        style: titleStyle,
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(Icons.keyboard_arrow_down),
-                    ],
-                  ),
-                ),
-                onTap: () {},
-              ),
-              IconButton(
-                icon: Icon(Icons.chevron_right),
-                onPressed: onNextSelected,
-              ),
-            ],
-          ),
-        ),
-      );
-}
-
-class _WeekDays extends StatelessWidget {
-  final Map<int, String> weekDayLabels;
-  final TextStyle weekdayLabelStyle;
-
-  const _WeekDays({
-    @required this.weekDayLabels,
-    @required this.weekdayLabelStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) => Material(
-        child: Container(
-          padding: componentPadding,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: weekDayLabels.keys
-                .map(
-                  (dayIndex) => Container(
-                    child: Text(
-                      weekDayLabels[dayIndex],
-                      style: weekdayLabelStyle ?? defaultWeekdayLabelStyle,
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-      );
-}
-
-/// build the calendar title based on input date time. e.g. Jan 2020
-typedef String CalendarTitleBuilder(MonthAndYear monthAndYear);
 
 /// when the current month is changed
 typedef void MonthChangedCallBack(MonthAndYear monthAndYear);
