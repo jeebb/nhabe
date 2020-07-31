@@ -4,7 +4,7 @@ class NBCalendar extends StatefulWidget {
   final CalendarTitleBuilder titleBuilder;
   final TextStyle titleStyle;
 
-  /// current date as default
+  /// current month as default
   final MonthAndYear selectedMonthAndYear;
 
   final MonthChangedCallBack onMonthChanged;
@@ -14,7 +14,7 @@ class NBCalendar extends StatefulWidget {
 
   final TextStyle monthDayLabelStyle;
   final TextStyle inactiveMonthDayLabelStyle;
-  final bool showInactiveMonthDays;
+  final bool showInActiveMonthDays;
 
   /// DateTime.monday / DateTime.tuesday / ... / DateTime.sunday
   final int firstDayOfWeek;
@@ -37,7 +37,7 @@ class NBCalendar extends StatefulWidget {
     this.firstDayOfWeek = DateTime.monday,
     this.monthDayLabelStyle,
     this.inactiveMonthDayLabelStyle,
-    this.showInactiveMonthDays = true,
+    this.showInActiveMonthDays = true,
   }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
             'There must be configured labels for all 7 days of a week');
 
@@ -49,6 +49,8 @@ class _NBCalendarState extends State<NBCalendar> {
   /// 'month' view
   MonthAndYear selectedMonthAndYear;
   DateTime selectedDate = DateTime.now();
+
+  bool changingMonth = false;
 
   @override
   void initState() {
@@ -68,8 +70,8 @@ class _NBCalendarState extends State<NBCalendar> {
               monthAndYear: selectedMonthAndYear,
               titleBuilder: widget.titleBuilder ?? defaultTitleBuilder,
               titleStyle: widget.titleStyle ?? defaultTitleStyle,
-              onPrevSelected: () {},
-              onNextSelected: () {},
+              onPrevSelected: !changingMonth ? _onPrev : null,
+              onNextSelected: !changingMonth ? _onNext : null,
             ),
             _WeekDays(
               weekDayLabels: widget.weekDayLabels,
@@ -78,10 +80,9 @@ class _NBCalendarState extends State<NBCalendar> {
               firstDayOfWeek: widget.firstDayOfWeek,
             ),
             _MonthDays(
-              monthAndYear: widget.selectedMonthAndYear ??
-                  MonthAndYear.fromDateTime(DateTime.now()),
+              monthAndYear: selectedMonthAndYear,
               firstDayOfWeek: widget.firstDayOfWeek,
-              showInactiveMonthDays: widget.showInactiveMonthDays,
+              showInActiveMonthDays: widget.showInActiveMonthDays,
               monthDayLabelStyle:
                   widget.monthDayLabelStyle ?? defaultMonthdayLabelStyle,
               inactiveMonthDayLabelStyle: widget.inactiveMonthDayLabelStyle ??
@@ -91,6 +92,44 @@ class _NBCalendarState extends State<NBCalendar> {
           ],
         ),
       );
+
+  void _onPrev() {
+    setState(() {
+      changingMonth = true;
+    });
+
+    final prevMonth = MonthAndYear.fromDateTime(
+        DateTime(selectedMonthAndYear.year, selectedMonthAndYear.month, -1));
+
+    setState(() {
+      selectedMonthAndYear = prevMonth;
+      changingMonth = false;
+    });
+
+    if (widget.onMonthChanged != null) {
+      widget.onMonthChanged(prevMonth);
+    }
+  }
+
+  void _onNext() {
+    setState(() {
+      changingMonth = true;
+    });
+
+    final nextMonth = MonthAndYear.fromDateTime(DateTime(
+      selectedMonthAndYear.year,
+      selectedMonthAndYear.month + 1,
+    ));
+
+    setState(() {
+      selectedMonthAndYear = nextMonth;
+      changingMonth = false;
+    });
+
+    if (widget.onMonthChanged != null) {
+      widget.onMonthChanged(nextMonth);
+    }
+  }
 }
 
 /// when the current month is changed

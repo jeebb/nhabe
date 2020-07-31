@@ -107,14 +107,14 @@ class _MonthDays extends StatelessWidget {
   final int firstDayOfWeek;
   final DateTime selectedDate;
   final TextStyle monthDayLabelStyle;
-  final bool showInactiveMonthDays;
+  final bool showInActiveMonthDays;
   final TextStyle inactiveMonthDayLabelStyle;
 
   const _MonthDays({
     @required this.monthAndYear,
     @required this.firstDayOfWeek,
     @required this.monthDayLabelStyle,
-    @required this.showInactiveMonthDays,
+    @required this.showInActiveMonthDays,
     @required this.inactiveMonthDayLabelStyle,
     this.selectedDate,
   })  : assert(monthAndYear != null),
@@ -134,21 +134,21 @@ class _MonthDays extends StatelessWidget {
   List<Widget> _monthDayGridItems() {
     final monthDays = <Widget>[];
 
-    bool buildingWidgets = true;
     var dayToBuild = _initialWidgetDate(monthAndYear);
 
-    // build each row of calendar month view
-    while (buildingWidgets) {
-      for (var i = 1; i <= DateTime.daysPerWeek; i++) {
-        final isInactiveDay = dayToBuild.month != monthAndYear.month;
-        monthDays.add(_monthDay(dayToBuild, isInactive: isInactiveDay));
+    var lastDayOfMonth = DateTime(monthAndYear.year, monthAndYear.month + 1)
+        .subtract(Duration(days: 1));
 
-        dayToBuild = dayToBuild.add(Duration(days: 1));
-      }
+    while (!dayToBuild.isAfter(lastDayOfMonth)) {
+      final isInactiveDay = dayToBuild.month != monthAndYear.month;
+      monthDays.add(_monthDay(dayToBuild, isInactive: isInactiveDay));
+      dayToBuild = dayToBuild.add(Duration(days: 1));
+    }
 
-      // continue to build if still in the same month or the last row is not ful-filled 100%
-      buildingWidgets = dayToBuild.month <= monthAndYear.month ||
-          monthDays.length % DateTime.daysPerWeek != 0;
+    // fulfill the remaining cells for the days next month (if required)
+    while (monthDays.length % DateTime.daysPerWeek != 0) {
+      monthDays.add(_monthDay(dayToBuild, isInactive: true));
+      dayToBuild = dayToBuild.add(Duration(days: 1));
     }
 
     return monthDays;
@@ -180,7 +180,7 @@ class _MonthDays extends StatelessWidget {
               )
             : Center(
                 child: Container(
-                  child: showInactiveMonthDays
+                  child: showInActiveMonthDays
                       ? Text(
                           '${dateTime.day}',
                           style: inactiveMonthDayLabelStyle,
