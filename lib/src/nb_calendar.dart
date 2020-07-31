@@ -12,6 +12,10 @@ class NBCalendar extends StatefulWidget {
   final Map<int, String> weekDayLabels;
   final TextStyle weekdayLabelStyle;
 
+  final TextStyle monthDayLabelStyle;
+  final TextStyle inactiveMonthDayLabelStyle;
+  final bool showInactiveMonthDays;
+
   /// DateTime.monday / DateTime.tuesday / ... / DateTime.sunday
   final int firstDayOfWeek;
 
@@ -31,6 +35,9 @@ class NBCalendar extends StatefulWidget {
     },
     this.weekdayLabelStyle,
     this.firstDayOfWeek = DateTime.monday,
+    this.monthDayLabelStyle,
+    this.inactiveMonthDayLabelStyle,
+    this.showInactiveMonthDays = true,
   }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
             'There must be configured labels for all 7 days of a week');
 
@@ -41,6 +48,7 @@ class NBCalendar extends StatefulWidget {
 class _NBCalendarState extends State<NBCalendar> {
   /// 'month' view
   MonthAndYear selectedMonthAndYear;
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -68,6 +76,20 @@ class _NBCalendarState extends State<NBCalendar> {
               weekdayLabelStyle:
                   widget.weekdayLabelStyle ?? defaultWeekdayLabelStyle,
               firstDayOfWeek: widget.firstDayOfWeek,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: _MonthDays(
+                monthAndYear: widget.selectedMonthAndYear ??
+                    MonthAndYear.fromDateTime(DateTime.now()),
+                firstDayOfWeek: widget.firstDayOfWeek,
+                showInactiveMonthDays: widget.showInactiveMonthDays,
+                monthDayLabelStyle:
+                    widget.monthDayLabelStyle ?? defaultMonthdayLabelStyle,
+                inactiveMonthDayLabelStyle: widget.inactiveMonthDayLabelStyle ??
+                    defaultInactiveMonthDayLabelStyle,
+                selectedDate: selectedDate,
+              ),
             ),
           ],
         ),

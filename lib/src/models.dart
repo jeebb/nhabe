@@ -16,3 +16,13 @@ class MonthAndYear {
   @override
   String toString() => "MonthAndYear{month: $month, year: $year}";
 }
+
+class DayAndMonth {
+  int day;
+  int month;
+
+  DayAndMonth({@required this.day, @required this.month});
+
+  @override
+  String toString() => "DayAndMonth{day: $day,  month: $month}";
+}
