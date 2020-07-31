@@ -91,11 +91,13 @@ class _WeekDays extends StatelessWidget {
     return weekdays;
   }
 
-  Widget _weekDay(String label) => Container(
-        child: Text(
-          label,
-          style: weekdayLabelStyle,
-          textAlign: TextAlign.center,
+  Widget _weekDay(String label) => Center(
+        child: Container(
+          child: Text(
+            label,
+            style: weekdayLabelStyle,
+            textAlign: TextAlign.center,
+          ),
         ),
       );
 }
@@ -164,23 +166,30 @@ class _MonthDays extends StatelessWidget {
     bool isInactive = false,
     bool isSelectedDay = false,
   }) =>
-      !isInactive
-          ? Container(
-              child: Text(
-                '${dateTime.day}',
-                style: monthDayLabelStyle,
-                textAlign: TextAlign.center,
+      InkWell(
+        onTap: () {},
+        child: !isInactive
+            ? Center(
+                child: Container(
+                  child: Text(
+                    '${dateTime.day}',
+                    style: monthDayLabelStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            : Center(
+                child: Container(
+                  child: showInactiveMonthDays
+                      ? Text(
+                          '${dateTime.day}',
+                          style: inactiveMonthDayLabelStyle,
+                          textAlign: TextAlign.center,
+                        )
+                      : Text(' ', textAlign: TextAlign.center),
+                ),
               ),
-            )
-          : Container(
-              child: showInactiveMonthDays
-                  ? Text(
-                      '${dateTime.day}',
-                      style: inactiveMonthDayLabelStyle,
-                      textAlign: TextAlign.center,
-                    )
-                  : Text(' ', textAlign: TextAlign.center),
-            );
+      );
 }
 
 /// build the calendar title based on input date time. e.g. Jan 2020

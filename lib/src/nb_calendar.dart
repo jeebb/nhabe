@@ -77,19 +77,16 @@ class _NBCalendarState extends State<NBCalendar> {
                   widget.weekdayLabelStyle ?? defaultWeekdayLabelStyle,
               firstDayOfWeek: widget.firstDayOfWeek,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: _MonthDays(
-                monthAndYear: widget.selectedMonthAndYear ??
-                    MonthAndYear.fromDateTime(DateTime.now()),
-                firstDayOfWeek: widget.firstDayOfWeek,
-                showInactiveMonthDays: widget.showInactiveMonthDays,
-                monthDayLabelStyle:
-                    widget.monthDayLabelStyle ?? defaultMonthdayLabelStyle,
-                inactiveMonthDayLabelStyle: widget.inactiveMonthDayLabelStyle ??
-                    defaultInactiveMonthDayLabelStyle,
-                selectedDate: selectedDate,
-              ),
+            _MonthDays(
+              monthAndYear: widget.selectedMonthAndYear ??
+                  MonthAndYear.fromDateTime(DateTime.now()),
+              firstDayOfWeek: widget.firstDayOfWeek,
+              showInactiveMonthDays: widget.showInactiveMonthDays,
+              monthDayLabelStyle:
+                  widget.monthDayLabelStyle ?? defaultMonthdayLabelStyle,
+              inactiveMonthDayLabelStyle: widget.inactiveMonthDayLabelStyle ??
+                  defaultInactiveMonthDayLabelStyle,
+              selectedDate: selectedDate,
             ),
           ],
         ),
