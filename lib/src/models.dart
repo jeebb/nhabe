@@ -6,7 +6,9 @@ class MonthAndYear {
   int month;
   int year;
 
-  MonthAndYear({@required this.month, @required this.year});
+  MonthAndYear({@required this.month, @required this.year})
+      : assert(month != null),
+        assert(year != null);
 
   static MonthAndYear fromDateTime(DateTime dateTime) =>
       MonthAndYear(month: dateTime.month, year: dateTime.year);
@@ -15,14 +17,10 @@ class MonthAndYear {
 
   @override
   String toString() => "MonthAndYear{month: $month, year: $year}";
-}
 
-class DayAndMonth {
-  int day;
-  int month;
+  bool equals(MonthAndYear input) {
+    assert(input != null, 'Input param cannot be null');
 
-  DayAndMonth({@required this.day, @required this.month});
-
-  @override
-  String toString() => "DayAndMonth{day: $day,  month: $month}";
+    return month == input.month && year == input.year;
+  }
 }

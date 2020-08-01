@@ -73,6 +73,13 @@ class _NBCalendarState extends State<NBCalendar> {
               titleStyle: defaultTitleStyle,
               onPrevSelected: !changingMonth ? _onPrev : null,
               onNextSelected: !changingMonth ? _onNext : null,
+              onMonthChanged: (monthAndYear) {
+                if (!selectedMonthAndYear.equals(monthAndYear)) {
+                  setState(() {
+                    selectedMonthAndYear = monthAndYear;
+                  });
+                }
+              },
             ),
             _WeekDays(
               weekDayLabels: widget.weekDayLabels,

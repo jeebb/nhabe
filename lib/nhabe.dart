@@ -11,3 +11,4 @@ part 'src/swiss_knife.dart';
 part "src/internal/calendar_header.dart";
 part "src/internal/week_days.dart";
 part "src/internal/month_days.dart";
+part 'src/internal/month_picker.dart';

@@ -7,12 +7,16 @@ class _CalendarHeader extends StatelessWidget {
   final VoidCallback onPrevSelected;
   final VoidCallback onNextSelected;
 
+  /// when a user taps on the header & jump to a specific month & year
+  final MonthChangedCallBack onMonthChanged;
+
   const _CalendarHeader({
     @required this.monthAndYear,
     @required this.titleBuilder,
     @required this.titleStyle,
     @required this.onPrevSelected,
     @required this.onNextSelected,
+    @required this.onMonthChanged,
   });
 
   @override
@@ -39,7 +43,7 @@ class _CalendarHeader extends StatelessWidget {
                   ],
                 ),
               ),
-              onTap: () {},
+              onTap: () => _onTitleTapped(context),
             ),
             IconButton(
               icon: Icon(Icons.chevron_right),
@@ -48,4 +52,17 @@ class _CalendarHeader extends StatelessWidget {
           ],
         ),
       );
+
+  void _onTitleTapped(BuildContext context) async {
+    final selectedMonthAndYear = await showDialog(
+      context: context,
+      builder: (dialogContext) => SimpleMonthPickerDialog(
+        monthAndYear: monthAndYear,
+      ),
+    );
+
+    if (selectedMonthAndYear != null) {
+      onMonthChanged(selectedMonthAndYear);
+    }
+  }
 }
