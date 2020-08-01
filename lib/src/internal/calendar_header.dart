@@ -28,7 +28,7 @@ class _CalendarHeader extends StatelessWidget {
             ),
             InkWell(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -36,8 +36,6 @@ class _CalendarHeader extends StatelessWidget {
                       titleBuilder(monthAndYear),
                       style: titleStyle,
                     ),
-                    const SizedBox(width: 8),
-                    Icon(Icons.keyboard_arrow_down),
                   ],
                 ),
               ),
