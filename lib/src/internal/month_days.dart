@@ -44,6 +44,7 @@ class _MonthDays extends StatelessWidget {
 
     while (!dayToBuild.isAfter(lastDayOfMonth)) {
       final isInactiveDay = dayToBuild.month != monthAndYear.month;
+
       monthDays.add(_monthDay(
         dayToBuild,
         isInactive: isInactiveDay,
@@ -69,7 +70,13 @@ class _MonthDays extends StatelessWidget {
 
   /// the first date to be displayed in the calendar widget (first cell of the month day grid)
   DateTime _initialWidgetDate(MonthAndYear inputMonth) {
-    final diff = (firstDayOfWeek - inputMonth.toDateTime().weekday).abs();
+    final firstDateOfMonth = inputMonth.toDateTime();
+
+    var diff = (firstDayOfWeek - firstDateOfMonth.weekday).abs();
+    if (firstDayOfWeek > firstDateOfMonth.weekday) {
+      diff = DateTime.daysPerWeek - diff;
+    }
+
     return DateTime(inputMonth.year, inputMonth.month)
         .subtract(Duration(days: diff));
   }

@@ -34,7 +34,7 @@ class NBCalendar extends StatefulWidget {
       DateTime.saturday: 'S',
       DateTime.sunday: 'S',
     },
-    this.firstDayOfWeek = DateTime.monday,
+    this.firstDayOfWeek = DateTime.sunday,
     this.showInActiveMonthDays = true,
     this.circleSelectedDay = true,
   }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
