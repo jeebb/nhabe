@@ -14,6 +14,8 @@ class NBCalendar extends StatefulWidget {
 
   final bool showInActiveMonthDays;
 
+  final bool circleSelectedDay;
+
   /// DateTime.monday / DateTime.tuesday / ... / DateTime.sunday
   final int firstDayOfWeek;
 
@@ -34,6 +36,7 @@ class NBCalendar extends StatefulWidget {
     },
     this.firstDayOfWeek = DateTime.monday,
     this.showInActiveMonthDays = true,
+    this.circleSelectedDay = true,
   }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
             'There must be configured labels for all 7 days of a week');
 
@@ -84,6 +87,7 @@ class _NBCalendarState extends State<NBCalendar> {
               inactiveMonthDayLabelStyle: defaultInactiveMonthDayLabelStyle,
               selectedDate: selectedDate,
               onDateSelected: _onDateSelected,
+              circleSelectedDay: widget.circleSelectedDay,
             ),
           ],
         ),
@@ -128,17 +132,26 @@ class _NBCalendarState extends State<NBCalendar> {
   }
 
   void _onDateSelected(DateTime dateTime) {
-    setState(() {
-      selectedDate = dateTime;
-    });
+    // don't fire the event multiple time on same date
+    if (!_isEqualDate(dateTime, selectedDate)) {
+      setState(() {
+        selectedDate = dateTime;
+      });
 
-    if (widget.onDateSelected != null) {
-      widget.onDateSelected(dateTime);
+      if (widget.onDateSelected != null) {
+        widget.onDateSelected(dateTime);
+      }
     }
   }
 }
+
+/// build the calendar title based on input date time. e.g. Jan 2020
+typedef String CalendarTitleBuilder(MonthAndYear monthAndYear);
 
 /// when the current month is changed
 typedef void MonthChangedCallBack(MonthAndYear monthAndYear);
 
 typedef void OnDateSelected(DateTime dateTime);
+
+final defaultTitleBuilder = (MonthAndYear selectedMonth) =>
+    DateFormat.yMMM().format(selectedMonth.toDateTime());
