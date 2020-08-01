@@ -27,6 +27,7 @@ class _MonthDays extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         width: double.infinity,
         child: GridView.count(
+          physics: NeverScrollableScrollPhysics(),
           padding: internalComponentPadding,
           shrinkWrap: true,
           crossAxisCount: 7,

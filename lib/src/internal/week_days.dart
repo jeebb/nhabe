@@ -16,6 +16,7 @@ class _WeekDays extends StatelessWidget {
         width: double.infinity,
         padding: internalComponentPadding,
         child: GridView.count(
+          physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           crossAxisCount: 7,
           childAspectRatio: 1.5,
