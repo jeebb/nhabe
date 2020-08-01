@@ -110,6 +110,8 @@ class _MonthDays extends StatelessWidget {
   final bool showInActiveMonthDays;
   final TextStyle inactiveMonthDayLabelStyle;
 
+  final OnDateSelected onDateSelected;
+
   const _MonthDays({
     @required this.monthAndYear,
     @required this.firstDayOfWeek,
@@ -117,6 +119,7 @@ class _MonthDays extends StatelessWidget {
     @required this.showInActiveMonthDays,
     @required this.inactiveMonthDayLabelStyle,
     this.selectedDate,
+    this.onDateSelected,
   })  : assert(monthAndYear != null),
         assert(firstDayOfWeek != null);
 
@@ -141,13 +144,23 @@ class _MonthDays extends StatelessWidget {
 
     while (!dayToBuild.isAfter(lastDayOfMonth)) {
       final isInactiveDay = dayToBuild.month != monthAndYear.month;
-      monthDays.add(_monthDay(dayToBuild, isInactive: isInactiveDay));
+      monthDays.add(_monthDay(
+        dayToBuild,
+        isInactive: isInactiveDay,
+        isSelectedDay:
+            selectedDate != null && _isEqualDate(selectedDate, dayToBuild),
+      ));
+
       dayToBuild = dayToBuild.add(Duration(days: 1));
     }
 
     // fulfill the remaining cells for the days next month (if required)
     while (monthDays.length % DateTime.daysPerWeek != 0) {
-      monthDays.add(_monthDay(dayToBuild, isInactive: true));
+      monthDays.add(_monthDay(
+        dayToBuild,
+        isInactive: true,
+      ));
+
       dayToBuild = dayToBuild.add(Duration(days: 1));
     }
 
@@ -167,13 +180,13 @@ class _MonthDays extends StatelessWidget {
     bool isSelectedDay = false,
   }) =>
       InkWell(
-        onTap: () {},
+        onTap: () => _onDayTapped(dateTime),
         child: !isInactive
             ? Center(
                 child: Container(
                   child: Text(
                     '${dateTime.day}',
-                    style: monthDayLabelStyle,
+                    style: _dayStyle(isSelectedDay),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -183,13 +196,39 @@ class _MonthDays extends StatelessWidget {
                   child: showInActiveMonthDays
                       ? Text(
                           '${dateTime.day}',
-                          style: inactiveMonthDayLabelStyle,
+                          style: _inActiveDayStyle(isSelectedDay),
                           textAlign: TextAlign.center,
                         )
                       : Text(' ', textAlign: TextAlign.center),
                 ),
               ),
       );
+
+  TextStyle _dayStyle(bool isSelected) {
+    if (!isSelected) {
+      return monthDayLabelStyle;
+    }
+
+    return monthDayLabelStyle.copyWith(fontWeight: FontWeight.bold);
+  }
+
+  TextStyle _inActiveDayStyle(bool isSelected) {
+    if (!isSelected) {
+      return inactiveMonthDayLabelStyle;
+    }
+
+    return inactiveMonthDayLabelStyle.copyWith(fontWeight: FontWeight.bold);
+  }
+
+  void _onDayTapped(DateTime dateTime) {
+    if (onDateSelected != null) {
+      onDateSelected(dateTime);
+    }
+  }
+
+  bool _isEqualDate(DateTime dt1, DateTime dt2) {
+    return dt1.year == dt2.year && dt1.month == dt2.month && dt1.day == dt2.day;
+  }
 }
 
 /// build the calendar title based on input date time. e.g. Jan 2020
