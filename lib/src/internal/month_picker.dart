@@ -23,7 +23,7 @@ class _SimpleMonthPickerDialogState extends State<SimpleMonthPickerDialog> {
 
   @override
   Widget build(BuildContext context) => SimpleDialog(
-        contentPadding: const EdgeInsets.fromLTRB(24, 12, 14, 16),
+        contentPadding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
         children: <Widget>[
           Container(
             child: Row(
