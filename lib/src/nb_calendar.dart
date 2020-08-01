@@ -2,6 +2,7 @@ part of nhabe;
 
 class NBCalendar extends StatefulWidget {
   final CalendarTitleBuilder titleBuilder;
+  final bool showHeader;
 
   /// current month as default
   final MonthAndYear selectedMonthAndYear;
@@ -21,6 +22,7 @@ class NBCalendar extends StatefulWidget {
 
   const NBCalendar({
     this.titleBuilder,
+    this.showHeader = true,
     this.selectedMonthAndYear,
     this.selectedDate,
     this.onMonthChanged,
@@ -67,19 +69,23 @@ class _NBCalendarState extends State<NBCalendar> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _CalendarHeader(
-              monthAndYear: selectedMonthAndYear,
-              titleBuilder: widget.titleBuilder ?? defaultTitleBuilder,
-              titleStyle: defaultTitleStyle,
-              onPrevSelected: !changingMonth ? _onPrev : null,
-              onNextSelected: !changingMonth ? _onNext : null,
-              onMonthChanged: (monthAndYear) {
-                if (!selectedMonthAndYear.equals(monthAndYear)) {
-                  setState(() {
-                    selectedMonthAndYear = monthAndYear;
-                  });
-                }
-              },
+            Visibility(
+              visible: widget.showHeader,
+              replacement: Container(),
+              child: _CalendarHeader(
+                monthAndYear: selectedMonthAndYear,
+                titleBuilder: widget.titleBuilder ?? defaultTitleBuilder,
+                titleStyle: defaultTitleStyle,
+                onPrevSelected: !changingMonth ? _onPrev : null,
+                onNextSelected: !changingMonth ? _onNext : null,
+                onMonthChanged: (monthAndYear) {
+                  if (!selectedMonthAndYear.equals(monthAndYear)) {
+                    setState(() {
+                      selectedMonthAndYear = monthAndYear;
+                    });
+                  }
+                },
+              ),
             ),
             _WeekDays(
               weekDayLabels: widget.weekDayLabels,
