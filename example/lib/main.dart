@@ -1,4 +1,8 @@
-import 'package:example/examples/SimpleCalendar.dart';
+import 'package:example/examples/custom_calendar_header.dart';
+import 'package:example/examples/custom_first_day_of_week.dart';
+import 'package:example/examples/custom_title_and_weekdays.dart';
+import 'package:example/examples/month_and_day_change_event.dart';
+import 'package:example/examples/simple_calendar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,22 +42,26 @@ class _ExampleHomeState extends State<ExampleHome> {
                 ),
                 RaisedButton(
                   child: Text('Custom Title & Weekdays'),
-                  onPressed: () {},
+                  onPressed: () => _navigate(CustomTitleAndWeekDays()),
                 ),
                 RaisedButton(
                   child: Text('Month & Day Change Event'),
-                  onPressed: () {},
+                  onPressed: () => _navigate(MonthAndDayChangeEvent()),
                 ),
                 RaisedButton(
                   child: Text('Custom First Day of Week'),
-                  onPressed: () {},
+                  onPressed: () => _navigate(CustomFirstDayOfWeek()),
                 ),
                 RaisedButton(
                   child: Text('Custom Calendar Header'),
-                  onPressed: () {},
+                  onPressed: () => _navigate(CustomCalendarHeader()),
                 ),
                 RaisedButton(
                   child: Text('With Event Indicators'),
+                  onPressed: () {},
+                ),
+                RaisedButton(
+                  child: Text('Different Month Selectors'),
                   onPressed: () {},
                 ),
               ],

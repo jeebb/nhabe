@@ -57,20 +57,10 @@ class NBCalendar extends StatefulWidget {
 
 class _NBCalendarState extends State<NBCalendar> {
   /// 'month' view
-  MonthAndYear selectedMonthAndYear;
-  DateTime selectedDate;
+  MonthAndYear _selectedMonthAndYear;
+  DateTime _selectedDate;
 
-  bool changingMonth = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    selectedMonthAndYear = widget.selectedMonthAndYear ??
-        MonthAndYear.fromDateTime(DateTime.now());
-
-    selectedDate = widget.selectedDate ?? DateTime.now();
-  }
+  bool _changingMonth = false;
 
   @override
   Widget build(BuildContext context) => widget.swipeToNavigate
@@ -95,13 +85,17 @@ class _NBCalendarState extends State<NBCalendar> {
                 monthAndYear: selectedMonthAndYear,
                 titleBuilder: widget.titleBuilder ?? defaultTitleBuilder,
                 titleStyle: defaultTitleStyle,
-                onPrevSelected: !changingMonth ? _onPrev : null,
-                onNextSelected: !changingMonth ? _onNext : null,
+                onPrevSelected: !_changingMonth ? _onPrev : null,
+                onNextSelected: !_changingMonth ? _onNext : null,
                 onMonthChanged: (monthAndYear) {
-                  if (!selectedMonthAndYear.equals(monthAndYear)) {
+                  if (!_selectedMonthAndYear.equals(monthAndYear)) {
                     setState(() {
-                      selectedMonthAndYear = monthAndYear;
+                      _selectedMonthAndYear = monthAndYear;
                     });
+
+                    if (widget.onMonthChanged != null) {
+                      widget.onMonthChanged(monthAndYear);
+                    }
                   }
                 },
               ),
@@ -126,6 +120,14 @@ class _NBCalendarState extends State<NBCalendar> {
         ),
       );
 
+  MonthAndYear get selectedMonthAndYear =>
+      _selectedMonthAndYear ??
+      (widget.selectedMonthAndYear ??
+          MonthAndYear.fromDateTime(DateTime.now()));
+
+  DateTime get selectedDate =>
+      _selectedDate ?? (widget.selectedDate ?? DateTime.now());
+
   Future<bool> _onHorizonSwipe(DismissDirection direction) async {
     if (direction == DismissDirection.startToEnd) {
       _onPrev();
@@ -138,15 +140,15 @@ class _NBCalendarState extends State<NBCalendar> {
 
   void _onPrev() {
     setState(() {
-      changingMonth = true;
+      _changingMonth = true;
     });
 
     final prevMonth = MonthAndYear.fromDateTime(
         DateTime(selectedMonthAndYear.year, selectedMonthAndYear.month, -1));
 
     setState(() {
-      selectedMonthAndYear = prevMonth;
-      changingMonth = false;
+      _selectedMonthAndYear = prevMonth;
+      _changingMonth = false;
     });
 
     if (widget.onMonthChanged != null) {
@@ -156,7 +158,7 @@ class _NBCalendarState extends State<NBCalendar> {
 
   void _onNext() {
     setState(() {
-      changingMonth = true;
+      _changingMonth = true;
     });
 
     final nextMonth = MonthAndYear.fromDateTime(DateTime(
@@ -165,8 +167,8 @@ class _NBCalendarState extends State<NBCalendar> {
     ));
 
     setState(() {
-      selectedMonthAndYear = nextMonth;
-      changingMonth = false;
+      _selectedMonthAndYear = nextMonth;
+      _changingMonth = false;
     });
 
     if (widget.onMonthChanged != null) {
@@ -176,9 +178,9 @@ class _NBCalendarState extends State<NBCalendar> {
 
   void _onDateSelected(DateTime dateTime) {
     // don't fire the event multiple time on same date
-    if (!_isEqualDate(dateTime, selectedDate)) {
+    if (!_isEqualDate(dateTime, _selectedDate)) {
       setState(() {
-        selectedDate = dateTime;
+        _selectedDate = dateTime;
       });
 
       if (widget.onDateSelected != null) {
