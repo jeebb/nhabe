@@ -24,3 +24,29 @@ class MonthAndYear {
     return month == input.month && year == input.year;
   }
 }
+
+class Date {
+  final int year;
+  final int month;
+  final int day;
+
+  Date(this.year, this.month, this.day)
+      : assert(year != null && month != null && day != null);
+
+  static Date fromDateTime(DateTime dt) => Date(dt.year, dt.month, dt.day);
+
+  @override
+  bool operator ==(other) =>
+      other.year == year && other.month == month && other.day == day;
+
+  @override
+  int get hashCode {
+    int result = 1;
+
+    result = 17 * result + year.hashCode;
+    result = 17 * result + month.hashCode;
+    result = 17 * result + day.hashCode;
+
+    return result;
+  }
+}

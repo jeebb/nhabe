@@ -8,6 +8,10 @@ class NBCalendar extends StatefulWidget {
   final MonthAndYear selectedMonthAndYear;
   final DateTime selectedDate;
 
+  /// map of: <day_of_current_month , num_of_related_items>
+  final Map<Date, int> dayEventIndicator;
+  final Color eventIndicatorColor;
+
   final MonthChangedCallBack onMonthChanged;
   final OnDateSelected onDateSelected;
 
@@ -27,6 +31,8 @@ class NBCalendar extends StatefulWidget {
     this.showHeader = true,
     this.selectedMonthAndYear,
     this.selectedDate,
+    this.dayEventIndicator = const {},
+    this.eventIndicatorColor,
     this.onMonthChanged,
     this.onDateSelected,
     this.weekDayLabels = const {
@@ -114,6 +120,7 @@ class _NBCalendarState extends State<NBCalendar> {
               selectedDate: selectedDate,
               onDateSelected: _onDateSelected,
               circleSelectedDay: widget.circleSelectedDay,
+              dayEventIndicator: widget.dayEventIndicator,
             ),
           ],
         ),

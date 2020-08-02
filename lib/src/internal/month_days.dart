@@ -4,6 +4,8 @@ class _MonthDays extends StatelessWidget {
   final MonthAndYear monthAndYear;
   final int firstDayOfWeek;
   final DateTime selectedDate;
+  final Map<Date, int> dayEventIndicator;
+  final Color eventIndicatorColor;
   final TextStyle monthDayLabelStyle;
   final bool showInActiveMonthDays;
   final TextStyle inactiveMonthDayLabelStyle;
@@ -17,6 +19,8 @@ class _MonthDays extends StatelessWidget {
     @required this.monthDayLabelStyle,
     @required this.showInActiveMonthDays,
     @required this.inactiveMonthDayLabelStyle,
+    this.dayEventIndicator = const {},
+    this.eventIndicatorColor,
     this.circleSelectedDay,
     this.selectedDate,
     this.onDateSelected,
@@ -31,11 +35,11 @@ class _MonthDays extends StatelessWidget {
           padding: internalComponentPadding,
           shrinkWrap: true,
           crossAxisCount: 7,
-          children: _monthDayGridItems(),
+          children: _monthDayGridItems(context),
         ),
       );
 
-  List<Widget> _monthDayGridItems() {
+  List<Widget> _monthDayGridItems(BuildContext context) {
     final monthDays = <Widget>[];
 
     var dayToBuild = _initialWidgetDate(monthAndYear);
@@ -47,6 +51,7 @@ class _MonthDays extends StatelessWidget {
       final isInactiveDay = dayToBuild.month != monthAndYear.month;
 
       monthDays.add(_monthDay(
+        context,
         dayToBuild,
         isInactive: isInactiveDay,
         isSelectedDay:
@@ -59,6 +64,7 @@ class _MonthDays extends StatelessWidget {
     // fulfill the remaining cells for the days next month (if required)
     while (monthDays.length % DateTime.daysPerWeek != 0) {
       monthDays.add(_monthDay(
+        context,
         dayToBuild,
         isInactive: true,
       ));
@@ -83,6 +89,7 @@ class _MonthDays extends StatelessWidget {
   }
 
   Widget _monthDay(
+    BuildContext context,
     DateTime dateTime, {
     bool isInactive = false,
     bool isSelectedDay = false,
@@ -95,24 +102,47 @@ class _MonthDays extends StatelessWidget {
           borderRadius: BorderRadius.circular(400),
           child: !isInactive
               ? Center(
-                  child: Text(
-                    '${dateTime.day}',
-                    style: _dayStyle(isSelectedDay),
-                    textAlign: TextAlign.center,
+                  child: Container(
+                    child: Text(
+                      '${dateTime.day}',
+                      style: _dayStyle(isSelectedDay),
+                      textAlign: TextAlign.center,
+                    ),
+                    decoration: _hasIndicator(dateTime)
+                        ? _indicatorDecoration(context)
+                        : null,
                   ),
                 )
               : Center(
                   child: showInActiveMonthDays
-                      ? Text(
-                          '${dateTime.day}',
-                          style: _inActiveDayStyle(isSelectedDay),
-                          textAlign: TextAlign.center,
+                      ? Container(
+                          child: Text(
+                            '${dateTime.day}',
+                            style: _inActiveDayStyle(isSelectedDay),
+                            textAlign: TextAlign.center,
+                          ),
+                          decoration: _hasIndicator(dateTime)
+                              ? _indicatorDecoration(context)
+                              : null,
                         )
                       : Text(
                           ' ',
                           textAlign: TextAlign.center,
                         ),
                 ),
+        ),
+      );
+
+  bool _hasIndicator(DateTime dateTime) =>
+      dayEventIndicator[Date.fromDateTime(dateTime)] != null &&
+      dayEventIndicator[Date.fromDateTime(dateTime)] > 0;
+
+  BoxDecoration _indicatorDecoration(BuildContext context) => BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 2,
+            color: eventIndicatorColor ?? Theme.of(context).primaryColor,
+          ),
         ),
       );
 
