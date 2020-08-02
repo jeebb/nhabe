@@ -20,6 +20,8 @@ class NBCalendar extends StatefulWidget {
   /// DateTime.monday / DateTime.tuesday / ... / DateTime.sunday
   final int firstDayOfWeek;
 
+  final bool swipeToNavigate;
+
   const NBCalendar({
     this.titleBuilder,
     this.showHeader = true,
@@ -39,6 +41,7 @@ class NBCalendar extends StatefulWidget {
     this.firstDayOfWeek = DateTime.sunday,
     this.showInActiveMonthDays = true,
     this.circleSelectedDay = true,
+    this.swipeToNavigate = true,
   }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
             'There must be configured labels for all 7 days of a week');
 
@@ -64,7 +67,17 @@ class _NBCalendarState extends State<NBCalendar> {
   }
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => widget.swipeToNavigate
+      ? Dismissible(
+          key: UniqueKey(),
+          confirmDismiss: _onHorizonSwipe,
+          movementDuration: Duration.zero,
+          resizeDuration: Duration.zero,
+          child: _calendar(),
+        )
+      : _calendar();
+
+  Widget _calendar() => Container(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -105,6 +118,16 @@ class _NBCalendarState extends State<NBCalendar> {
           ],
         ),
       );
+
+  Future<bool> _onHorizonSwipe(DismissDirection direction) async {
+    if (direction == DismissDirection.startToEnd) {
+      _onPrev();
+    } else {
+      _onNext();
+    }
+
+    return true;
+  }
 
   void _onPrev() {
     setState(() {
