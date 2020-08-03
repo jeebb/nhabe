@@ -1,7 +1,6 @@
 name: nhabe
 description: An elegant calendar widget for Flutter app
 version: 1.0.0
-author: Duy Nguyen (jeenguyen.vn@gmail.com)
 homepage: https://github.com/jeebb/nhabe
 
 environment:
