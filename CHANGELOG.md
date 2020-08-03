@@ -1,3 +1,3 @@
-## [1.0.0] - TODO: Add release date.
+## v1.0.0 - Initial Release
 
-* TODO: Describe initial release.
+* Create first version of the widget
