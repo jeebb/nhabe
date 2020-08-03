@@ -3,6 +3,7 @@ part of nhabe;
 class _CalendarHeader extends StatelessWidget {
   final MonthAndYear monthAndYear;
   final CalendarTitleBuilder titleBuilder;
+  final MonthPickerMode monthPickerMode;
   final TextStyle titleStyle;
   final VoidCallback onPrevSelected;
   final VoidCallback onNextSelected;
@@ -13,6 +14,7 @@ class _CalendarHeader extends StatelessWidget {
   const _CalendarHeader({
     @required this.monthAndYear,
     @required this.titleBuilder,
+    @required this.monthPickerMode,
     @required this.titleStyle,
     @required this.onPrevSelected,
     @required this.onNextSelected,
@@ -54,11 +56,17 @@ class _CalendarHeader extends StatelessWidget {
       );
 
   void _onTitleTapped(BuildContext context) async {
+    final monthPicker = MonthPickerMode.SIMPLE == monthPickerMode
+        ? SimpleMonthPickerDialog(
+            monthAndYear: monthAndYear,
+          )
+        : MonthPickerGrid(
+            monthAndYear: monthAndYear,
+          );
+
     final selectedMonthAndYear = await showDialog(
       context: context,
-      builder: (dialogContext) => SimpleMonthPickerDialog(
-        monthAndYear: monthAndYear,
-      ),
+      builder: (_) => monthPicker,
     );
 
     if (selectedMonthAndYear != null) {

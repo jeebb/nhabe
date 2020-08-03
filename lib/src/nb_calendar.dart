@@ -3,6 +3,7 @@ part of nhabe;
 class NBCalendar extends StatefulWidget {
   final CalendarTitleBuilder titleBuilder;
   final bool showHeader;
+  final MonthPickerMode monthPickerMode;
 
   /// current month as default
   final MonthAndYear selectedMonthAndYear;
@@ -29,6 +30,7 @@ class NBCalendar extends StatefulWidget {
   const NBCalendar({
     this.titleBuilder,
     this.showHeader = true,
+    this.monthPickerMode = MonthPickerMode.GRID,
     this.selectedMonthAndYear,
     this.selectedDate,
     this.dayEventIndicator = const {},
@@ -84,11 +86,12 @@ class _NBCalendarState extends State<NBCalendar> {
               child: _CalendarHeader(
                 monthAndYear: selectedMonthAndYear,
                 titleBuilder: widget.titleBuilder ?? defaultTitleBuilder,
+                monthPickerMode: widget.monthPickerMode,
                 titleStyle: defaultTitleStyle,
                 onPrevSelected: !_changingMonth ? _onPrev : null,
                 onNextSelected: !_changingMonth ? _onNext : null,
                 onMonthChanged: (monthAndYear) {
-                  if (!_selectedMonthAndYear.equals(monthAndYear)) {
+                  if (!selectedMonthAndYear.equals(monthAndYear)) {
                     setState(() {
                       _selectedMonthAndYear = monthAndYear;
                     });

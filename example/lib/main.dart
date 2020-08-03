@@ -3,6 +3,7 @@ import 'package:example/examples/custom_first_day_of_week.dart';
 import 'package:example/examples/custom_title_and_weekdays.dart';
 import 'package:example/examples/event_indicator.dart';
 import 'package:example/examples/month_and_day_change_event.dart';
+import 'package:example/examples/month_picker_modes.dart';
 import 'package:example/examples/simple_calendar.dart';
 import 'package:flutter/material.dart';
 
@@ -62,8 +63,8 @@ class _ExampleHomeState extends State<ExampleHome> {
                   onPressed: () => _navigate(EventIndicator()),
                 ),
                 RaisedButton(
-                  child: Text('Different Month Selectors'),
-                  onPressed: () {},
+                  child: Text('Month Picker Modes'),
+                  onPressed: () => _navigate(MonthPickerModes()),
                 ),
               ],
             ),
