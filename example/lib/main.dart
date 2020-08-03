@@ -1,6 +1,7 @@
 import 'package:example/examples/custom_calendar_header.dart';
 import 'package:example/examples/custom_first_day_of_week.dart';
 import 'package:example/examples/custom_title_and_weekdays.dart';
+import 'package:example/examples/event_indicator.dart';
 import 'package:example/examples/month_and_day_change_event.dart';
 import 'package:example/examples/simple_calendar.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class _ExampleHomeState extends State<ExampleHome> {
                 ),
                 RaisedButton(
                   child: Text('With Event Indicators'),
-                  onPressed: () {},
+                  onPressed: () => _navigate(EventIndicator()),
                 ),
                 RaisedButton(
                   child: Text('Different Month Selectors'),
