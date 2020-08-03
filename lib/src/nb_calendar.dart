@@ -1,30 +1,57 @@
 part of nhabe;
 
 class NBCalendar extends StatefulWidget {
+  /// custom builder for the header title. e.g. changing the date format
+  /// default: yMMM format
   final CalendarTitleBuilder titleBuilder;
+
+  /// whether to show the calendar header
+  /// default: true
   final bool showHeader;
+
+  /// label for the weekdays
+  /// default: M, T, W, T, F, S, S
+  final Map<int, String> weekDayLabels;
+
+  /// specify the first day of week: DateTime.monday / DateTime.tuesday / ... / DateTime.sunday
+  /// default: DateTime.sunday
+  final int firstDayOfWeek;
+
+  /// switch between two different UIs for month picker (simple view & grid view)
+  /// default: grid view
   final MonthPickerMode monthPickerMode;
 
-  /// current month as default
+  /// current month & year
+  /// default: current month
   final MonthAndYear selectedMonthAndYear;
+
+  /// selected date
+  /// default: today
   final DateTime selectedDate;
+
+  /// draw a circle around the selected day
+  /// default: true
+  final bool circleSelectedDay;
+
+  /// show the days from previous / next month
+  /// default: true
+  final bool showInActiveMonthDays;
 
   /// map of: <day_of_current_month , num_of_related_items>
   final Map<Date, int> dayEventIndicator;
+
+  /// color of the event indicator.
+  /// default: primary theme color
   final Color eventIndicatorColor;
 
+  /// callback for month-changed event
   final MonthChangedCallBack onMonthChanged;
+
+  /// callback for date-selected event
   final OnDateSelected onDateSelected;
 
-  final Map<int, String> weekDayLabels;
-
-  final bool showInActiveMonthDays;
-
-  final bool circleSelectedDay;
-
-  /// DateTime.monday / DateTime.tuesday / ... / DateTime.sunday
-  final int firstDayOfWeek;
-
+  /// swipe left / right to change the month
+  /// default: true
   final bool swipeToNavigate;
 
   const NBCalendar({
