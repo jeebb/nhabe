@@ -25,11 +25,11 @@ class _EventIndicatorState extends State<EventIndicator> {
     final now = DateTime.now();
 
     Map<Date, int> indicators = {
-      Date(now.year, now.month, 12): 1,
-      Date(now.year, now.month, 17): 1,
-      Date(now.year, now.month, 13): 1,
-      Date(now.year, now.month, 19): 1,
-      Date(now.year, now.month, 23): 1,
+      Date(year: now.year, month: now.month, day: 12): 1,
+      Date(year: now.year, month: now.month, day: 17): 1,
+      Date(year: now.year, month: now.month, day: 13): 1,
+      Date(year: now.year, month: now.month, day: 19): 1,
+      Date(year: now.year, month: now.month, day: 23): 1,
     };
 
     return indicators;

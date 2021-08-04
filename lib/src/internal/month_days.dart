@@ -3,29 +3,28 @@ part of nhabe;
 class _MonthDays extends StatelessWidget {
   final MonthAndYear monthAndYear;
   final int firstDayOfWeek;
-  final DateTime selectedDate;
+  final DateTime? selectedDate;
   final Map<Date, int> dayEventIndicator;
-  final Color eventIndicatorColor;
+  final Color? eventIndicatorColor;
   final TextStyle monthDayLabelStyle;
   final bool showInActiveMonthDays;
   final TextStyle inactiveMonthDayLabelStyle;
-  final bool circleSelectedDay;
+  final bool? circleSelectedDay;
 
-  final OnDateSelected onDateSelected;
+  final OnDateSelected? onDateSelected;
 
   const _MonthDays({
-    @required this.monthAndYear,
-    @required this.firstDayOfWeek,
-    @required this.monthDayLabelStyle,
-    @required this.showInActiveMonthDays,
-    @required this.inactiveMonthDayLabelStyle,
+    required this.monthAndYear,
+    required this.firstDayOfWeek,
+    required this.monthDayLabelStyle,
+    required this.showInActiveMonthDays,
+    required this.inactiveMonthDayLabelStyle,
     this.dayEventIndicator = const {},
     this.eventIndicatorColor,
     this.circleSelectedDay,
     this.selectedDate,
     this.onDateSelected,
-  })  : assert(monthAndYear != null),
-        assert(firstDayOfWeek != null);
+  });
 
   @override
   Widget build(BuildContext context) => Container(
@@ -135,7 +134,7 @@ class _MonthDays extends StatelessWidget {
 
   bool _hasIndicator(DateTime dateTime) =>
       dayEventIndicator[Date.fromDateTime(dateTime)] != null &&
-      dayEventIndicator[Date.fromDateTime(dateTime)] > 0;
+      dayEventIndicator[Date.fromDateTime(dateTime)]! > 0;
 
   BoxDecoration _indicatorDecoration(BuildContext context) => BoxDecoration(
         border: Border(
@@ -146,8 +145,8 @@ class _MonthDays extends StatelessWidget {
         ),
       );
 
-  BoxDecoration _dayDecoration(bool isSelected) =>
-      isSelected && circleSelectedDay
+  BoxDecoration? _dayDecoration(bool isSelected) =>
+      isSelected && circleSelectedDay!
           ? BoxDecoration(
               border: Border.all(),
               borderRadius: BorderRadius.circular(400),
@@ -164,7 +163,7 @@ class _MonthDays extends StatelessWidget {
 
   void _onDayTapped(DateTime dateTime) {
     if (onDateSelected != null) {
-      onDateSelected(dateTime);
+      onDateSelected!(dateTime);
     }
   }
 }

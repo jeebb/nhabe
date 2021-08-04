@@ -3,7 +3,7 @@ part of nhabe;
 class NBCalendar extends StatefulWidget {
   /// custom builder for the header title. e.g. changing the date format
   /// default: yMMM format
-  final CalendarTitleBuilder titleBuilder;
+  final CalendarTitleBuilder? titleBuilder;
 
   /// whether to show the calendar header
   /// default: true
@@ -23,11 +23,11 @@ class NBCalendar extends StatefulWidget {
 
   /// current month & year
   /// default: current month
-  final MonthAndYear selectedMonthAndYear;
+  final MonthAndYear? selectedMonthAndYear;
 
   /// selected date
   /// default: today
-  final DateTime selectedDate;
+  final DateTime? selectedDate;
 
   /// draw a circle around the selected day
   /// default: true
@@ -42,13 +42,13 @@ class NBCalendar extends StatefulWidget {
 
   /// color of the event indicator.
   /// default: primary theme color
-  final Color eventIndicatorColor;
+  final Color? eventIndicatorColor;
 
   /// callback for month-changed event
-  final MonthChangedCallBack onMonthChanged;
+  final MonthChangedCallBack? onMonthChanged;
 
   /// callback for date-selected event
-  final OnDateSelected onDateSelected;
+  final OnDateSelected? onDateSelected;
 
   /// swipe left / right to change the month
   /// default: true
@@ -77,7 +77,7 @@ class NBCalendar extends StatefulWidget {
     this.showInActiveMonthDays = true,
     this.circleSelectedDay = true,
     this.swipeToNavigate = true,
-  }) : assert(weekDayLabels != null && weekDayLabels.length == 7,
+  }) : assert(weekDayLabels.length == 7,
             'There must be configured labels for all 7 days of a week');
 
   @override
@@ -86,8 +86,8 @@ class NBCalendar extends StatefulWidget {
 
 class _NBCalendarState extends State<NBCalendar> {
   /// 'month' view
-  MonthAndYear _selectedMonthAndYear;
-  DateTime _selectedDate;
+  MonthAndYear? _selectedMonthAndYear;
+  DateTime? _selectedDate;
 
   bool _changingMonth = false;
 
@@ -123,9 +123,7 @@ class _NBCalendarState extends State<NBCalendar> {
                       _selectedMonthAndYear = monthAndYear;
                     });
 
-                    if (widget.onMonthChanged != null) {
-                      widget.onMonthChanged(monthAndYear);
-                    }
+                    widget.onMonthChanged?.call(monthAndYear);
                   }
                 },
               ),
@@ -181,9 +179,7 @@ class _NBCalendarState extends State<NBCalendar> {
       _changingMonth = false;
     });
 
-    if (widget.onMonthChanged != null) {
-      widget.onMonthChanged(prevMonth);
-    }
+    widget.onMonthChanged?.call(prevMonth);
   }
 
   void _onNext() {
@@ -201,9 +197,7 @@ class _NBCalendarState extends State<NBCalendar> {
       _changingMonth = false;
     });
 
-    if (widget.onMonthChanged != null) {
-      widget.onMonthChanged(nextMonth);
-    }
+    widget.onMonthChanged?.call(nextMonth);
   }
 
   void _onDateSelected(DateTime dateTime) {
@@ -213,9 +207,7 @@ class _NBCalendarState extends State<NBCalendar> {
         _selectedDate = dateTime;
       });
 
-      if (widget.onDateSelected != null) {
-        widget.onDateSelected(dateTime);
-      }
+      widget.onDateSelected?.call(dateTime);
     }
   }
 }

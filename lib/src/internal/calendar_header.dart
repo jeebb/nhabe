@@ -5,20 +5,20 @@ class _CalendarHeader extends StatelessWidget {
   final CalendarTitleBuilder titleBuilder;
   final MonthPickerMode monthPickerMode;
   final TextStyle titleStyle;
-  final VoidCallback onPrevSelected;
-  final VoidCallback onNextSelected;
+  final VoidCallback? onPrevSelected;
+  final VoidCallback? onNextSelected;
 
   /// when a user taps on the header & jump to a specific month & year
   final MonthChangedCallBack onMonthChanged;
 
   const _CalendarHeader({
-    @required this.monthAndYear,
-    @required this.titleBuilder,
-    @required this.monthPickerMode,
-    @required this.titleStyle,
-    @required this.onPrevSelected,
-    @required this.onNextSelected,
-    @required this.onMonthChanged,
+    required this.monthAndYear,
+    required this.titleBuilder,
+    required this.monthPickerMode,
+    required this.titleStyle,
+    required this.onPrevSelected,
+    required this.onNextSelected,
+    required this.onMonthChanged,
   });
 
   @override

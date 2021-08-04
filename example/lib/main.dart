@@ -38,31 +38,31 @@ class _ExampleHomeState extends State<ExampleHome> {
             padding: const EdgeInsets.all(8.0),
             child: ListView(
               children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Simple Usage'),
                   onPressed: () => _navigate(SimpleCalendar()),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Custom Title & Weekdays'),
                   onPressed: () => _navigate(CustomTitleAndWeekDays()),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Month & Day Change Event'),
                   onPressed: () => _navigate(MonthAndDayChangeEvent()),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Custom First Day of Week'),
                   onPressed: () => _navigate(CustomFirstDayOfWeek()),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Custom Calendar Header'),
                   onPressed: () => _navigate(CustomCalendarHeader()),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('With Event Indicators'),
                   onPressed: () => _navigate(EventIndicator()),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Month Picker Modes'),
                   onPressed: () => _navigate(MonthPickerModes()),
                 ),

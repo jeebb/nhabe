@@ -20,15 +20,15 @@ final _monthLabels = <String>[
 class SimpleMonthPickerDialog extends StatefulWidget {
   final MonthAndYear monthAndYear;
 
-  SimpleMonthPickerDialog({@required this.monthAndYear});
+  SimpleMonthPickerDialog({required this.monthAndYear});
 
   @override
   State<StatefulWidget> createState() => _SimpleMonthPickerDialogState();
 }
 
 class _SimpleMonthPickerDialogState extends State<SimpleMonthPickerDialog> {
-  int currentMonth;
-  int currentYear;
+  int? currentMonth;
+  int? currentYear;
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _SimpleMonthPickerDialogState extends State<SimpleMonthPickerDialog> {
                     isExpanded: true,
                     items: _months(),
                     value: currentMonth,
-                    onChanged: (value) => setState(() {
+                    onChanged: (dynamic value) => setState(() {
                       currentMonth = value;
                     }),
                   ),
@@ -64,7 +64,7 @@ class _SimpleMonthPickerDialogState extends State<SimpleMonthPickerDialog> {
                     isExpanded: true,
                     items: _years(),
                     value: currentYear,
-                    onChanged: (value) => setState(() {
+                    onChanged: (dynamic value) => setState(() {
                       currentYear = value;
                     }),
                   ),
@@ -72,7 +72,7 @@ class _SimpleMonthPickerDialogState extends State<SimpleMonthPickerDialog> {
               ],
             ),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: _onConfirmSelect,
             child: Text('Select'),
           )
@@ -114,7 +114,7 @@ class _SimpleMonthPickerDialogState extends State<SimpleMonthPickerDialog> {
   void _onConfirmSelect() {
     Navigator.pop(
       context,
-      MonthAndYear(month: currentMonth, year: currentYear),
+      MonthAndYear(month: currentMonth!, year: currentYear!),
     );
   }
 }
@@ -122,15 +122,15 @@ class _SimpleMonthPickerDialogState extends State<SimpleMonthPickerDialog> {
 class MonthPickerGrid extends StatefulWidget {
   final MonthAndYear monthAndYear;
 
-  MonthPickerGrid({@required this.monthAndYear}) : assert(monthAndYear != null);
+  MonthPickerGrid({required this.monthAndYear});
 
   @override
   State<StatefulWidget> createState() => _MonthPickerGridState();
 }
 
 class _MonthPickerGridState extends State<MonthPickerGrid> {
-  int currentMonth;
-  int currentYear;
+  late int currentMonth;
+  late int currentYear;
 
   @override
   void initState() {

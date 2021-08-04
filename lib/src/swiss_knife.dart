@@ -2,7 +2,7 @@ part of nhabe;
 
 /// common utilities
 
-bool _isEqualDate(DateTime d1, DateTime d2) {
+bool _isEqualDate(DateTime? d1, DateTime? d2) {
   if (d1 == null && d2 == null) {
     return true;
   } else if (d1 == null) {

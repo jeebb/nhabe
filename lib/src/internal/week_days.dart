@@ -6,9 +6,9 @@ class _WeekDays extends StatelessWidget {
   final int firstDayOfWeek;
 
   const _WeekDays({
-    @required this.weekDayLabels,
-    @required this.weekdayLabelStyle,
-    @required this.firstDayOfWeek,
+    required this.weekDayLabels,
+    required this.weekdayLabelStyle,
+    required this.firstDayOfWeek,
   });
 
   @override
@@ -27,13 +27,13 @@ class _WeekDays extends StatelessWidget {
   List<Widget> _weekDays() {
     final weekdays = <Widget>[
       for (var i = firstDayOfWeek; i <= DateTime.daysPerWeek; i++)
-        _weekDay(weekDayLabels[i]),
+        _weekDay(weekDayLabels[i]!),
     ];
 
     if (firstDayOfWeek > DateTime.monday) {
       weekdays.addAll(<Widget>[
         for (var i = DateTime.monday; i < firstDayOfWeek; i++)
-          _weekDay(weekDayLabels[i]),
+          _weekDay(weekDayLabels[i]!),
       ]);
     }
 
